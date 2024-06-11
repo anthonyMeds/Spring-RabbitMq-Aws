@@ -3,6 +3,7 @@ package com.proposta.proposta_app.service;
 import com.proposta.proposta_app.dto.PropostaRequestDto;
 import com.proposta.proposta_app.dto.PropostaResponseDto;
 import com.proposta.proposta_app.entity.Proposta;
+import com.proposta.proposta_app.mapper.PropostaMapper;
 import com.proposta.proposta_app.repository.PropostaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,11 @@ public class PropostaService {
 
     public PropostaResponseDto criar (@RequestBody PropostaRequestDto requestDto){
 
-        propostaRepository.save(new Proposta());
+        Proposta proposta = PropostaMapper.INSTANCE.convertDtoToProposta(requestDto);
 
-        return null;
+        propostaRepository.save(proposta);
+
+        return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
     }
 
 }
