@@ -1,5 +1,9 @@
 package com.proposta.proposta_app.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.ExchangeBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -11,6 +15,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfiguration {
+
+    //    Gerenciar permisões spring-rabbit
+    @Bean
+    public RabbitAdmin criarRabbitAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
+
+    @Bean
+    public ApplicationListener<ApplicationReadyEvent> inicializarAdmin(RabbitAdmin rabbitAdmin) {
+        return event -> rabbitAdmin.initialize();
+    }
 
 //    Criar filas pendentes e concluídas
 
@@ -34,16 +49,25 @@ public class RabbitMQConfiguration {
         return QueueBuilder.durable("proposta-concluida.ms-notificacao").build();
     }
 
-//    Gerenciar permisões spring-rabbit
+// Criação de exchanges e bingings
     @Bean
-    public RabbitAdmin criarRabbitAdmin(ConnectionFactory connectionFactory) {
-        return new RabbitAdmin(connectionFactory);
+    public FanoutExchange criarFanoutExchangePropostaPendente() {
+        return ExchangeBuilder.fanoutExchange("proposta-pendente.ex").build();
     }
 
     @Bean
-    public ApplicationListener<ApplicationReadyEvent> inicializarAdmin(RabbitAdmin rabbitAdmin) {
-        return event -> rabbitAdmin.initialize();
+    public Binding criarBindingPropostaPendenteMsAnaliseCredito() {
+        return BindingBuilder.bind(criarFilaPropostaPendenteMsAnaliseCredito())
+                .to(criarFanoutExchangePropostaPendente());
     }
+
+    @Bean
+    public Binding criarBindingPropostaPendenteMsNotificacao() {
+        return BindingBuilder.bind(criarFilaPropostaPendenteMsNotificacao())
+                .to(criarFanoutExchangePropostaPendente());
+    }
+
+
 
 
 }
