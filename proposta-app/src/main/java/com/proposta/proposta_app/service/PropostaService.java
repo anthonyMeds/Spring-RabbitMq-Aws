@@ -5,19 +5,30 @@ import com.proposta.proposta_app.dto.PropostaResponseDto;
 import com.proposta.proposta_app.entity.Proposta;
 import com.proposta.proposta_app.mapper.PropostaMapper;
 import com.proposta.proposta_app.repository.PropostaRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class PropostaService {
 
-    PropostaRepository propostaRepository;
+    private PropostaRepository propostaRepository;
 
-    NotificacaoService notificacaoService;
+    private NotificacaoService notificacaoService;
+
+    private String exchange;
+
+    public PropostaService(
+            PropostaRepository propostaRepository,
+            NotificacaoService notificacaoService,
+            @Value("${rabbitmq.propostapendente.exchange}") String exchange) {
+        this.propostaRepository = propostaRepository;
+        this.notificacaoService = notificacaoService;
+        this.exchange = exchange;
+    }
+
 
     public PropostaResponseDto criar (@RequestBody PropostaRequestDto requestDto){
 
