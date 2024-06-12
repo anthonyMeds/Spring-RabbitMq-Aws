@@ -36,11 +36,21 @@ public class PropostaService {
 
         propostaRepository.save(proposta);
 
-        PropostaResponseDto propostaResponseDto = PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+        notificarRabbitMq(proposta);
 
-        notificacaoService.notificar(propostaResponseDto, "proposta-pendente.ex");
+        return PropostaMapper.INSTANCE.convertEntityToDto(proposta);
+    }
 
-        return propostaResponseDto;
+//    Caso não consiga processar, seta integrada como false para serviço agendado posterior
+    private void notificarRabbitMq(Proposta proposta) {
+        try {
+            notificacaoService.notificar(proposta, exchange);
+        }catch (RuntimeException runtimeException) {
+
+            proposta.setIntegrada(false);
+            propostaRepository.save(proposta);
+        }
+
     }
 
     public List<PropostaResponseDto> obterPropostas() {
