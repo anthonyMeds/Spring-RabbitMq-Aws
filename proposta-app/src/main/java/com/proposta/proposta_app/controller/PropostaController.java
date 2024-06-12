@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @AllArgsConstructor
 @RestController
@@ -25,7 +26,11 @@ public class PropostaController {
 
         PropostaResponseDto criar = propostaService.criar(requestDto);
 
-        return ResponseEntity.ok(criar);
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(criar.getId())
+                .toUri())
+                .body(criar);
     }
 
 }
