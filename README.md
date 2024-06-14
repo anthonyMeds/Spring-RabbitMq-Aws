@@ -1,3 +1,7 @@
 Cadastro | Validação de crédito | Notificação sms via amazon SNS
 
-Microsserviços Docker  MapStruct 
+Stacks: 
+Microsserviços
+Docker
+Fanout Exchange - Rabbit Mq
+Amazon Simple Notification Service 
