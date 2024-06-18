@@ -1,6 +1,7 @@
 package com.proposta.proposta_app.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,15 +29,15 @@ public class Proposta {
 
     private int prazoPagamento;
 
-    private Boolean aprovado;
+    private Boolean aprovada;
 
     private boolean integrada;
 
     private String observacao;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JsonBackReference
     @JoinColumn(name = "id_usuario")
+    @JsonManagedReference
     private Usuario usuario;
 
 

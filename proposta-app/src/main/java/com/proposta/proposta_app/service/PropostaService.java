@@ -53,11 +53,7 @@ public class PropostaService {
 
     }
 
-    public List<PropostaResponseDto> obterPropostas() {
-
-        Iterable<Proposta> propostas = propostaRepository.findAll();
-
-        return PropostaMapper.INSTANCE.convertEntityListToDtoList(propostas);
-
+    public List<PropostaResponseDto> obterProposta() {
+        return PropostaMapper.INSTANCE.convertListEntityToListDto(propostaRepository.findAll());
     }
 }

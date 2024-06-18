@@ -1,6 +1,6 @@
 package com.proposta.proposta_app.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +33,6 @@ public class Usuario {
     private Double renda;
 
     @OneToOne(mappedBy = "usuario")
-    @JsonManagedReference
+    @JsonBackReference
     private Proposta proposta;
 }
