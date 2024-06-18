@@ -17,8 +17,9 @@ public class PropostaPendenteListener {
     public void propostaPendente(Proposta proposta) {
 
         String mensagem = String.format(MensagemConstante.PROPOSTA_EM_ANALISE, proposta.getUsuario().getNome());
+        String telefone = proposta.getUsuario().getTelefone();
 
-        notificacaoSnsService.notificar(mensagem);
+        notificacaoSnsService.notificar(telefone, mensagem);
 
     }
 }
