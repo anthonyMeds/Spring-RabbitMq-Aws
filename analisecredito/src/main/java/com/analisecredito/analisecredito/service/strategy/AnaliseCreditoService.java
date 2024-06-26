@@ -25,12 +25,12 @@ public class AnaliseCreditoService {
 
         try {
 
-            boolean aprovada =
+            int soma =
                     calculoPontoList
                             .stream()
-                            .mapToInt(impl -> impl.calcularPonto(proposta)).sum() > 350;
+                            .mapToInt(impl -> impl.calcularPonto(proposta)).sum() ;
 
-            proposta.setAprovado(aprovada);
+            proposta.setAprovado(soma > 350);
 
         } catch (StrategyException e) {
             proposta.setAprovado(false);
