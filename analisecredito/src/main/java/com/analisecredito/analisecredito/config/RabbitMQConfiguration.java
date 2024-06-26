@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfiguration {
 
     @Bean
-    public MessageConverter jackson2JsonMessageConverter() {
+    public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 }
