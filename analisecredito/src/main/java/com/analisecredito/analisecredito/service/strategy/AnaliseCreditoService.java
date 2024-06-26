@@ -2,6 +2,9 @@ package com.analisecredito.analisecredito.service.strategy;
 
 import com.analisecredito.analisecredito.domain.Proposta;
 import com.analisecredito.analisecredito.exception.StrategyException;
+import com.analisecredito.analisecredito.service.strategy.impl.NotificacaoRabbitMQService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,12 +12,14 @@ import java.util.List;
 @Service
 public class AnaliseCreditoService {
 
-
+    @Autowired
     private List<CalculoPonto> calculoPontoList;
 
-    public AnaliseCreditoService(List<CalculoPonto> calculoPontoList) {
-        this.calculoPontoList = calculoPontoList;
-    }
+    @Autowired
+    private NotificacaoRabbitMQService notificacaoRabbitMQService;
+
+    @Value("${rabbitmq.propostaconcluida.exchange}")
+    private String exchangePropostaConcluida;
 
     public void analisar(Proposta proposta) {
 
@@ -29,9 +34,10 @@ public class AnaliseCreditoService {
 
         } catch (StrategyException e) {
             proposta.setAprovado(false);
+            proposta.setObservacao(e.getMessage());
         }
 
-
+        notificacaoRabbitMQService.notificar(exchangePropostaConcluida, proposta);
 
     }
 

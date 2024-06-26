@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+import static com.analisecredito.analisecredito.constante.MensagemConstante.CLIENTE_NEGATIVADO;
+
 @Order(1)
 @Component
 public class NomeNegativadoImpl implements CalculoPonto {
@@ -16,7 +18,7 @@ public class NomeNegativadoImpl implements CalculoPonto {
     public int calcularPonto(Proposta proposta) {
 
         if (nomeNegativado()){
-            throw new StrategyException("Nome negativado.");
+            throw new StrategyException(String.format(CLIENTE_NEGATIVADO, proposta.getUsuario().getNome()));
         }
 
         return 100;

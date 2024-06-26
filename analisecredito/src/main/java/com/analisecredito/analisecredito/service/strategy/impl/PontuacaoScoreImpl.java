@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+import static com.analisecredito.analisecredito.constante.MensagemConstante.PONTUACAO_BAIXA;
+
 @Order(2)
 @Component
 public class PontuacaoScoreImpl implements CalculoPonto {
@@ -17,8 +19,8 @@ public class PontuacaoScoreImpl implements CalculoPonto {
 
         int score = score();
 
-        if (score <= 200) {
-            throw new StrategyException("Baixo score");
+        if (score < 200) {
+            throw new StrategyException(String.format(PONTUACAO_BAIXA, proposta.getUsuario().getNome()));
         } else if (score <= 400) {
             return 150;
         } else if (score <= 600) {
