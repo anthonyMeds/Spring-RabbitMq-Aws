@@ -12,9 +12,8 @@ public class PropostaConcluidaListener {
     @Autowired
     private PropostaRepository propostaRepository;
 
-    @RabbitListener(queues = "rabbitmq.propostaconcluida.exchange")
-    public void cadastrar(Proposta proposta) {
+    @RabbitListener(queues = "${rabbitmq.queue.proposta.concluida}")
+    public void propostaConcluida(Proposta proposta) {
         propostaRepository.save(proposta);
     }
-
 }
