@@ -30,10 +30,10 @@ public class AnaliseCreditoService {
                             .stream()
                             .mapToInt(impl -> impl.calcularPonto(proposta)).sum() ;
 
-            proposta.setAprovado(soma > 350);
+            proposta.setAprovada(soma > 350);
 
         } catch (StrategyException e) {
-            proposta.setAprovado(false);
+            proposta.setAprovada(false);
             proposta.setObservacao(e.getMessage());
         }
 
