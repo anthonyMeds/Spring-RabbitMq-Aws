@@ -1,11 +1,14 @@
 package com.analisecredito.analisecredito.service.strategy.impl;
 
 import com.analisecredito.analisecredito.domain.Proposta;
+import com.analisecredito.analisecredito.exception.StrategyException;
 import com.analisecredito.analisecredito.service.strategy.CalculoPonto;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Order(1)
 @Component
 public class NomeNegativadoImpl implements CalculoPonto {
 
@@ -13,7 +16,7 @@ public class NomeNegativadoImpl implements CalculoPonto {
     public int calcularPonto(Proposta proposta) {
 
         if (nomeNegativado()){
-            throw new RuntimeException("Nome negativado.");
+            throw new StrategyException("Nome negativado.");
         }
 
         return 100;

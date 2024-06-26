@@ -1,11 +1,14 @@
 package com.analisecredito.analisecredito.service.strategy.impl;
 
 import com.analisecredito.analisecredito.domain.Proposta;
+import com.analisecredito.analisecredito.exception.StrategyException;
 import com.analisecredito.analisecredito.service.strategy.CalculoPonto;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Order(2)
 @Component
 public class PontuacaoScoreImpl implements CalculoPonto {
 
@@ -15,7 +18,7 @@ public class PontuacaoScoreImpl implements CalculoPonto {
         int score = score();
 
         if (score <= 200) {
-            throw new RuntimeException("Baixo score");
+            throw new StrategyException("Baixo score");
         } else if (score <= 400) {
             return 150;
         } else if (score <= 600) {
