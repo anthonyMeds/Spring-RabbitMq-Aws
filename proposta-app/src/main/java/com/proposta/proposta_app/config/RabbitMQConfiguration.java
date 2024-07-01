@@ -59,7 +59,7 @@ public class RabbitMQConfiguration {
         return QueueBuilder.durable("proposta-concluida.ms-notificacao").build();
     }
 
-// Criação de exchanges e bingings
+    // Criação de exchanges e bingings
     @Bean
     public FanoutExchange criarFanoutExchangePropostaPendente() {
         return ExchangeBuilder.fanoutExchange(exchangePropostaPendente).build();
@@ -94,7 +94,7 @@ public class RabbitMQConfiguration {
                 .to(criarFanoutExchangePropostaConcluida());
     }
 
-//    Criar rabbit template com conversor para objetos
+    //    Criar rabbit template com conversor para objetos
     @Bean
     public MessageConverter jackson2JsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
@@ -109,6 +109,21 @@ public class RabbitMQConfiguration {
         return rabbitTemplate;
     }
 
+    // Criar Dead Letter Queue
 
+    @Bean
+    public Queue criarFilaPropostapendenteDlq() {
+        return QueueBuilder.durable("proposta-pendente.dlq").build();
+    }
+
+    @Bean
+    public FanoutExchange deadLetterExchange() {
+        return ExchangeBuilder.fanoutExchange("proposta-pendente-dlx.ex").build();
+    }
+
+    @Bean
+    public Binding criarBinding() {
+        return BindingBuilder.bind(criarFilaPropostapendenteDlq()).to(deadLetterExchange());
+    }
 
 }
